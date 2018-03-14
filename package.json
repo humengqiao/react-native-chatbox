@@ -1,6 +1,6 @@
 {
   "name": "react-native-chatbox",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "react component to implement a placed bottom chatbox which can pick emoji text or others",
   "main": "index.js",
   "author": "573071547@qq.com",
@@ -17,7 +17,7 @@
     "babel-preset-react-native": "^4.0.0",
     "prop-types": "^15.6.1",
     "react": "^16.2.0",
-    "react-native": "^0.54.2"
+    "react-native": "^0.49"
   },
   "bugs": "https://github.com/humengqiao/react-native-chatbox/issues",
   "homepage": "https://github.com/humengqiao/react-native-chatbox#readme"

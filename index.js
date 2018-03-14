@@ -23,7 +23,7 @@ const INPUT_HEIGHT = 30;
 const MAX_INPUT_HEIGHT = 200;
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 
-export default class ChatInput extends Component {
+export default class ChatBox extends Component {
     constructor(props) {
         super(props)
         this.emojis = this.formatEmojiArr(emoji)
@@ -107,7 +107,7 @@ export default class ChatInput extends Component {
                 this.state.showRecord ?
                     <TouchableOpacity onPress={() => this.setState({showRecord: false, panelHeight: 0, showEmoji: false, showExtra: false})}>
                         <Image
-                            source={require('../images/record.png')}
+                            source={require('./images/record.png')}
                             style={styles.icon}/>
                             </TouchableOpacity>
                     :
@@ -118,7 +118,7 @@ export default class ChatInput extends Component {
                             })
                         }}>
                             <Image
-                                source={require('../images/keyboard.png')}
+                                source={require('./images/keyboard.png')}
                                 style={styles.icon}/>
                         </TouchableOpacity>
         )
@@ -190,7 +190,7 @@ export default class ChatInput extends Component {
         }, 1000)
         }}>
         <Image
-            source={require('../images/emotion.png')}
+            source={require('./images/emotion.png')}
             style={[styles.icon, {marginRight: 5}]}/>
         </TouchableOpacity>
         :
@@ -204,7 +204,7 @@ export default class ChatInput extends Component {
             this.setState({panelHeight: 0, showEmoji: false, showExtra: false})
         }}>
         <Image
-            source={require('../images/keyboard.png')}
+            source={require('./images/keyboard.png')}
             style={[styles.icon, {marginRight: 5}]}/>
         </TouchableOpacity>
         }
@@ -224,7 +224,7 @@ export default class ChatInput extends Component {
         }, 500)
         }}>
         <Image
-            source={require('../images/add.png')}
+            source={require('./images/add.png')}
             style={styles.icon}/>
         </TouchableOpacity>
         :

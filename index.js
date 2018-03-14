@@ -16,8 +16,8 @@ import {
     Platform,
     Alert
 } from 'react-native';
-import {getScreenSize, getPixel} from '../utils/common';
-import emoji from '../config/emoji';
+import {getScreenSize, getPixel} from './utils/common';
+import emoji from './config/emoji';
 const EXPAND_PANEL_HEIGHT = 150;
 const INPUT_HEIGHT = 30;
 const MAX_INPUT_HEIGHT = 200;

@@ -14,7 +14,8 @@ import {
     UIManager,
     PermissionsAndroid,
     Platform,
-    Alert
+    Alert,
+    ViewPropTypes
 } from 'react-native';
 import {getScreenSize, getPixel} from './utils/common';
 import emoji from './config/emoji';
@@ -39,7 +40,21 @@ export default class ChatBox extends Component {
     }
 
     static propTypes = {
+        emojis: PropTypes.object,
+        containerStyle: ViewPropTypes.style,
+        extraContainerStyle: ViewPropTypes.style,
+        emojiContainerStyle: ViewPropTypes.style,
+        onStartRecord: PropTypes.func.isRequired,
+        onStopRecord: PropTypes.func.isRequired,
+        onSendTextMessage: PropTypes.func.isRequired,
+        extras: PropTypes.arrayOf(PropTypes.object)
+    }
 
+    static defaultProps = {
+        containerStyle: {},
+        extraContainerStyle: {},
+        emojiContainerStyle: {},
+        extras: []
     }
 
     componentWillMount() {
@@ -125,7 +140,6 @@ export default class ChatBox extends Component {
     }
 
     renderCenter() {
-        const themeColor = this.props.themeColor
         return (
             this.state.showRecord ?
                 <TextInput
@@ -172,7 +186,6 @@ export default class ChatBox extends Component {
     }
 
     renderRight() {
-        const themeColor = this.props.themeColor
         return (
             <View style={styles.rightWrapper}>
                 {
@@ -229,7 +242,7 @@ export default class ChatBox extends Component {
                         </TouchableOpacity>
                         :
                         <TouchableOpacity
-                            style={[styles.sendButton, {backgroundColor: themeColor}]}
+                            style={styles.sendButton}
                             onPress={() => {
                                 this.setState({sendText: ''})
                                 this.props.onSendTextMessage(this.state.sendText)
@@ -288,10 +301,9 @@ export default class ChatBox extends Component {
     }
 
     renderEmoji() {
-        const themeColor = this.props.themeColor
         return (
             this.state.showEmoji ?
-                <View style={this.props.emojiContainerStyle}>
+                <View style={[{height: EXPAND_PANEL_HEIGHT}, this.props.emojiContainerStyle]}>
                     <ScrollView
                         style={[styles.emojiPanel, {height: this.state.panelHeight}]}
                         horizontal={true}
@@ -325,7 +337,7 @@ export default class ChatBox extends Component {
     renderExtra() {
         return (
             this.state.showExtra ?
-                <View style={this.props.extraContainerStyle}>
+                <View style={[{height: EXPAND_PANEL_HEIGHT}, this.props.extraContainerStyle]}>
                     <ScrollView
                         contentContainerStyle={styles.extraWrapper}
                         horizontal={true}>
@@ -453,7 +465,8 @@ const styles = StyleSheet.create({
         borderColor: '#000',
         borderRadius: 3,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        backgroundColor: '#999'
     },
     extraWrapper: {
         paddingTop: 10,

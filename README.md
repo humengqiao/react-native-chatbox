@@ -5,12 +5,8 @@ a multifunctional input box
 ```
 you must place this component last which in a flexbox container
 ```
-<figure class="half">
-    <center>
-        <img height="500" src="https://github.com/humengqiao/react-native-chatbox/blob/master/screenshots/Screenshot_2018-03-22-21-13-04-818_com.chatboxdem.png?raw=true"><img height="500" src="https://github.com/humengqiao/react-native-chatbox/blob/master/screenshots/Screenshot_2018-03-22-21-13-11-349_com.chatboxdem.png?raw=true">
-        <img height="500" src="https://github.com/humengqiao/react-native-chatbox/blob/master/screenshots/Screenshot_2018-03-22-21-13-16-277_com.chatboxdem.png?raw=true"><img height="500" src="https://github.com/humengqiao/react-native-chatbox/blob/master/screenshots/Screenshot_2018-03-22-21-13-20-631_com.chatboxdem.png?raw=true">
-    </center>
-</figure>
+<img height="500" src="https://github.com/humengqiao/react-native-chatbox/blob/master/screenshots/Screenshot_2018-03-22-21-13-04-818_com.chatboxdem.png?raw=true"><img height="500" src="https://github.com/humengqiao/react-native-chatbox/blob/master/screenshots/Screenshot_2018-03-22-21-13-11-349_com.chatboxdem.png?raw=true">
+<img height="500" src="https://github.com/humengqiao/react-native-chatbox/blob/master/screenshots/Screenshot_2018-03-22-21-13-16-277_com.chatboxdem.png?raw=true"><img height="500" src="https://github.com/humengqiao/react-native-chatbox/blob/master/screenshots/Screenshot_2018-03-22-21-13-20-631_com.chatboxdem.png?raw=true">
 
 # Install
 ```

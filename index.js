@@ -26,7 +26,7 @@ UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationE
 export default class ChatBox extends Component {
     constructor(props) {
         super(props)
-        this.emojis = this.formatEmojiArr(emoji)
+        this.emojis = this.formatEmojiArr(this.props.emojis || emoji)
         this.state = {
             showRecord: true,
             showEmoji: false,
@@ -44,7 +44,7 @@ export default class ChatBox extends Component {
 
     componentWillMount() {
         this.checkPermission()
-            .then(async hasPermission => {
+            .then(hasPermission => {
                 this.setState({hasPermission})
                 if (!hasPermission) return
             })
@@ -178,17 +178,16 @@ export default class ChatBox extends Component {
                 {
                     !this.state.showEmoji ?
                         <TouchableOpacity onPress={() => {
-                            LayoutAnimation.configureNext({
-                                duration: 500,
-                                update: {
-                                    type: LayoutAnimation.Types.spring
-                                }
-                            })
-                            console.log('open emoji')
-                            this.setState({panelHeight: EXPAND_PANEL_HEIGHT, showEmoji: true, showRecord: true, showExtra: false})
                             setTimeout(() => {
-                                Keyboard.dismiss()
-                            }, 1000)
+                                LayoutAnimation.configureNext({
+                                    duration: 500,
+                                    update: {
+                                        type: LayoutAnimation.Types.spring
+                                    }
+                                })
+                                this.setState({panelHeight: EXPAND_PANEL_HEIGHT, showEmoji: true, showRecord: true, showExtra: false})
+                            }, 500)
+                            Keyboard.dismiss()
                         }}>
                             <Image
                                 source={require('./images/emotion.png')}
@@ -202,7 +201,6 @@ export default class ChatBox extends Component {
                                     type: LayoutAnimation.Types.spring
                                 }
                             })
-                            console.log('close emoji')
                             this.setState({panelHeight: 0, showEmoji: false, showExtra: false})
                         }}>
                             <Image
@@ -214,16 +212,16 @@ export default class ChatBox extends Component {
                     this.state.sendText === '' ?
                         <TouchableOpacity
                             onPress={() => {
-                                LayoutAnimation.configureNext({
-                                    duration: 500,
-                                    update: {
-                                        type: LayoutAnimation.Types.spring
-                                    }
-                                })
-                                this.setState({panelHeight: EXPAND_PANEL_HEIGHT, showEmoji: false, showExtra: !this.state.showExtra})
                                 setTimeout(() => {
-                                    Keyboard.dismiss()
+                                    LayoutAnimation.configureNext({
+                                        duration: 500,
+                                        update: {
+                                            type: LayoutAnimation.Types.spring
+                                        }
+                                    })
+                                    this.setState({panelHeight: EXPAND_PANEL_HEIGHT, showEmoji: false, showExtra: !this.state.showExtra})
                                 }, 500)
+                                Keyboard.dismiss()
                             }}>
                             <Image
                                 source={require('./images/add.png')}
@@ -293,15 +291,17 @@ export default class ChatBox extends Component {
         const themeColor = this.props.themeColor
         return (
             this.state.showEmoji ?
-                <ScrollView
-                    style={[styles.emojiPanel, {height: this.state.panelHeight}]}
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}
-                    pagingEnabled={true}>
-                    {
-                        this.renderEmojiContent()
-                    }
-                </ScrollView>
+                <View style={this.props.emojiContainerStyle}>
+                    <ScrollView
+                        style={[styles.emojiPanel, {height: this.state.panelHeight}]}
+                        horizontal={true}
+                        showsHorizontalScrollIndicator={false}
+                        pagingEnabled={true}>
+                        {
+                            this.renderEmojiContent()
+                        }
+                    </ScrollView>
+                </View>
                 :
                 null
         )
@@ -325,17 +325,19 @@ export default class ChatBox extends Component {
     renderExtra() {
         return (
             this.state.showExtra ?
-                <ScrollView
-                    contentContainerStyle={[styles.extraWrapper, this.props.extraContainerStyle]}
-                    horizontal={true}>
-                    {
+                <View style={this.props.extraContainerStyle}>
+                    <ScrollView
+                        contentContainerStyle={styles.extraWrapper}
+                        horizontal={true}>
+                        {
 
-                        this.props.extras && this.props.extras.length > 0 ?
-                            this.renderExtraItem()
-                            :
-                            null
-                    }
-                </ScrollView>
+                            this.props.extras && this.props.extras.length > 0 ?
+                                this.renderExtraItem()
+                                :
+                                null
+                        }
+                    </ScrollView>
+                </View>
                 :
                 null
         )
@@ -454,7 +456,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     extraWrapper: {
-        padding: 10
+        paddingTop: 10,
+        paddingLeft: 10
     },
     extraItemWrapper: {
         marginRight: 10,

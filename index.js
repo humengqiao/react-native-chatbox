@@ -45,9 +45,9 @@ export default class ChatBox extends Component {
     componentWillMount() {
         this.checkPermission()
             .then(async hasPermission => {
-            this.setState({hasPermission})
-            if (!hasPermission) return
-        })
+                this.setState({hasPermission})
+                if (!hasPermission) return
+            })
     }
 
     async checkPermission() {
@@ -57,7 +57,7 @@ export default class ChatBox extends Component {
 
         const rationale = {
             title: '获取录音权限',
-            message: '简聊RN正请求获取麦克风权限用于录音'
+            message: '正请求获取麦克风权限用于录音'
         }
 
         try {
@@ -79,11 +79,11 @@ export default class ChatBox extends Component {
             return
         }
 
-        this.props.startRecord()
+        this.props.onStartRecord()
     }
 
     async stopRecord() {
-        this.props.stopRecord()
+        this.props.onStopRecord()
     }
 
     formatEmojiArr(emojiMap) {
@@ -104,154 +104,156 @@ export default class ChatBox extends Component {
 
     renderLeft() {
         return (
-                this.state.showRecord ?
-                    <TouchableOpacity onPress={() => this.setState({showRecord: false, panelHeight: 0, showEmoji: false, showExtra: false})}>
-                        <Image
-                            source={require('./images/record.png')}
-                            style={styles.icon}/>
-                            </TouchableOpacity>
-                    :
-                        <TouchableOpacity onPress={() => {
-                            this.setState({showRecord: true})
-                                setTimeout(() => {
-                                    this.input.focus()
-                            })
-                        }}>
-                            <Image
-                                source={require('./images/keyboard.png')}
-                                style={styles.icon}/>
-                        </TouchableOpacity>
+            this.state.showRecord ?
+                <TouchableOpacity onPress={() => this.setState({showRecord: false, panelHeight: 0, showEmoji: false, showExtra: false})}>
+                    <Image
+                        source={require('./images/record.png')}
+                        style={styles.icon}/>
+                </TouchableOpacity>
+                :
+                <TouchableOpacity onPress={() => {
+                    this.setState({showRecord: true})
+                    setTimeout(() => {
+                        this.input.focus()
+                    })
+                }}>
+                    <Image
+                        source={require('./images/keyboard.png')}
+                        style={styles.icon}/>
+                </TouchableOpacity>
         )
     }
 
     renderCenter() {
         const themeColor = this.props.themeColor
         return (
-                this.state.showRecord ?
-            <TextInput
-                ref={el => this.input = el}
-                style={[styles.input, {height: this.state.inputHeight}]}
-                multiline={true}
-                value={this.state.sendText}
-                blurOnSubmit={false}
-                numberOfLines={5}
-                onContentSizeChange={event => {
-                    const height = event.nativeEvent.contentSize.height
-                    if(height > this.state.inputHeight && height < MAX_INPUT_HEIGHT) {
-                    this.setState({
-                        inputHeight: height
-                    })
-                }else if(height < INPUT_HEIGHT){
-                    this.setState({
-                        inputHeight: INPUT_HEIGHT
-            })
-        }
-    }}
-        underlineColorAndroid='transparent'
-        onFocus={() => {
-            LayoutAnimation.configureNext({
-                duration: 500,
-                update: {
-                    type: LayoutAnimation.Types.spring
-                }
-            })
-            setTimeout(() => {
-                this.setState({panelHeight: 0, showEmoji: false, showRecord: true, showExtra: false})
-        })
-        }}
-        onChangeText={value => this.setState({sendText: value})}/>
-    :
-    <TouchableHighlight
-        style={styles.recordButton}
-        delayPressIn={10}
-        onPressIn={() => this.startRecord()}
-        onPressOut={() => this.stopRecord()}>
-    <Text style={{fontSize: 16, color: '#fff'}}>按住录音</Text>
-        </TouchableHighlight>
-    )
+            this.state.showRecord ?
+                <TextInput
+                    ref={el => this.input = el}
+                    style={[styles.input, {height: this.state.inputHeight}]}
+                    multiline={true}
+                    value={this.state.sendText}
+                    blurOnSubmit={false}
+                    numberOfLines={5}
+                    onContentSizeChange={event => {
+                        const height = event.nativeEvent.contentSize.height
+                        if(height > this.state.inputHeight && height < MAX_INPUT_HEIGHT) {
+                            this.setState({
+                                inputHeight: height
+                            })
+                        }else if(height < INPUT_HEIGHT){
+                            this.setState({
+                                inputHeight: INPUT_HEIGHT
+                            })
+                        }
+                    }}
+                    underlineColorAndroid='transparent'
+                    onFocus={() => {
+                        LayoutAnimation.configureNext({
+                            duration: 500,
+                            update: {
+                                type: LayoutAnimation.Types.spring
+                            }
+                        })
+                        setTimeout(() => {
+                            this.setState({panelHeight: 0, showEmoji: false, showRecord: true, showExtra: false})
+                        })
+                    }}
+                    onChangeText={value => this.setState({sendText: value})}/>
+                :
+                <TouchableHighlight
+                    style={styles.recordButton}
+                    delayPressIn={10}
+                    onPressIn={() => this.startRecord()}
+                    onPressOut={() => this.stopRecord()}>
+                    <Text style={{fontSize: 16, color: '#fff'}}>按住录音</Text>
+                </TouchableHighlight>
+        )
     }
 
     renderRight() {
         const themeColor = this.props.themeColor
         return (
             <View style={styles.rightWrapper}>
-        {
-            !this.state.showEmoji ?
-        <TouchableOpacity onPress={() => {
-            LayoutAnimation.configureNext({
-                duration: 500,
-                update: {
-                    type: LayoutAnimation.Types.spring
+                {
+                    !this.state.showEmoji ?
+                        <TouchableOpacity onPress={() => {
+                            LayoutAnimation.configureNext({
+                                duration: 500,
+                                update: {
+                                    type: LayoutAnimation.Types.spring
+                                }
+                            })
+                            console.log('open emoji')
+                            this.setState({panelHeight: EXPAND_PANEL_HEIGHT, showEmoji: true, showRecord: true, showExtra: false})
+                            setTimeout(() => {
+                                Keyboard.dismiss()
+                            }, 1000)
+                        }}>
+                            <Image
+                                source={require('./images/emotion.png')}
+                                style={[styles.icon, {marginRight: 5}]}/>
+                        </TouchableOpacity>
+                        :
+                        <TouchableOpacity onPress={() => {
+                            LayoutAnimation.configureNext({
+                                duration: 500,
+                                update: {
+                                    type: LayoutAnimation.Types.spring
+                                }
+                            })
+                            console.log('close emoji')
+                            this.setState({panelHeight: 0, showEmoji: false, showExtra: false})
+                        }}>
+                            <Image
+                                source={require('./images/keyboard.png')}
+                                style={[styles.icon, {marginRight: 5}]}/>
+                        </TouchableOpacity>
                 }
-            })
-            this.setState({panelHeight: EXPAND_PANEL_HEIGHT, showEmoji: true, showRecord: true, showExtra: false})
-            setTimeout(() => {
-                Keyboard.dismiss()
-        }, 1000)
-        }}>
-        <Image
-            source={require('./images/emotion.png')}
-            style={[styles.icon, {marginRight: 5}]}/>
-        </TouchableOpacity>
-        :
-        <TouchableOpacity onPress={() => {
-            LayoutAnimation.configureNext({
-                duration: 500,
-                update: {
-                    type: LayoutAnimation.Types.spring
+                {
+                    this.state.sendText === '' ?
+                        <TouchableOpacity
+                            onPress={() => {
+                                LayoutAnimation.configureNext({
+                                    duration: 500,
+                                    update: {
+                                        type: LayoutAnimation.Types.spring
+                                    }
+                                })
+                                this.setState({panelHeight: EXPAND_PANEL_HEIGHT, showEmoji: false, showExtra: !this.state.showExtra})
+                                setTimeout(() => {
+                                    Keyboard.dismiss()
+                                }, 500)
+                            }}>
+                            <Image
+                                source={require('./images/add.png')}
+                                style={styles.icon}/>
+                        </TouchableOpacity>
+                        :
+                        <TouchableOpacity
+                            style={[styles.sendButton, {backgroundColor: themeColor}]}
+                            onPress={() => {
+                                this.setState({sendText: ''})
+                                this.props.onSendTextMessage(this.state.sendText)
+                            }}>
+                            <Text style={{color: '#fff', fontSize: 14}}>发送</Text>
+                        </TouchableOpacity>
                 }
-            })
-            this.setState({panelHeight: 0, showEmoji: false, showExtra: false})
-        }}>
-        <Image
-            source={require('./images/keyboard.png')}
-            style={[styles.icon, {marginRight: 5}]}/>
-        </TouchableOpacity>
-        }
-        {
-            this.state.sendText === '' ?
-        <TouchableOpacity
-            onPress={() => {
-            LayoutAnimation.configureNext({
-                duration: 500,
-                update: {
-                    type: LayoutAnimation.Types.spring
-                }
-            })
-            this.setState({panelHeight: EXPAND_PANEL_HEIGHT, showEmoji: false, showExtra: true})
-            setTimeout(() => {
-                Keyboard.dismiss()
-        }, 500)
-        }}>
-        <Image
-            source={require('./images/add.png')}
-            style={styles.icon}/>
-        </TouchableOpacity>
-        :
-        <TouchableOpacity
-            style={[styles.sendButton, {backgroundColor: themeColor}]}
-            onPress={() => {
-            this.setState({sendText: ''})
-            this.props.onSendTextMessage(this.state.sendText)
-        }}>
-        <Text style={{color: '#fff', fontSize: 14}}>发送</Text>
-        </TouchableOpacity>
-        }
-    </View>
-    )
+            </View>
+        )
     }
 
     renderEmojiContent() {
         return this.emojis.map((pageData, pageNum) => {
-                return (
-            <View
-        style={styles.page}
-        key={pageNum}>
-            {pageData.map((emoji, index) => this.renderEmojiItem(emoji, index))}
-        {this.renderSwitchMenu(pageNum)}
-    </View>
-    )
-    })
+            return (
+                <View
+                    style={styles.page}
+                    key={pageNum}>
+                    {pageData.map((emoji, index) => this.renderEmojiItem(emoji, index))}
+                    {this.renderSwitchMenu(pageNum)}
+                </View>
+            )
+        })
     }
 
     renderSwitchMenu(index) {
@@ -266,8 +268,8 @@ export default class ChatBox extends Component {
         for (let i = 0; i < pages; i++) {
             const itemStyle = i === index ? styles.switchItemCrt : styles.switchItemGrey
             items.push(
-            <View style={[styles.switchItem, itemStyle]} key={i}></View>
-        )
+                <View style={[styles.switchItem, itemStyle]} key={i}></View>
+            )
         }
         return <View style={[styles.switchMenu, menuStyle]}>{items}</View>
     }
@@ -275,59 +277,66 @@ export default class ChatBox extends Component {
     renderEmojiItem(emoji, key) {
         return (
             <TouchableOpacity
-        style={styles.btn}
-        key={key}
-        onPress={() => this.onPickEmoji(emoji)}>
-    <Text
-        style={styles.emoji}
-        allowFontScaling={false}>
-            {emoji}
-            </Text>
+                style={styles.btn}
+                key={key}
+                onPress={() => this.onPickEmoji(emoji)}>
+                <Text
+                    style={styles.emoji}
+                    allowFontScaling={false}>
+                    {emoji}
+                </Text>
             </TouchableOpacity>
-    )
+        )
     }
 
     renderEmoji() {
         const themeColor = this.props.themeColor
         return (
-                this.state.showEmoji ?
-            <ScrollView
-        style={[styles.emojiPanel, {height: this.state.panelHeight}]}
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-        pagingEnabled={true}>
-            {
-                this.renderEmojiContent()
+            this.state.showEmoji ?
+                <ScrollView
+                    style={[styles.emojiPanel, {height: this.state.panelHeight}]}
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                    pagingEnabled={true}>
+                    {
+                        this.renderEmojiContent()
+                    }
+                </ScrollView>
+                :
+                null
+        )
     }
-    </ScrollView>
-    :
-        null
-    )
+
+    renderExtraItem() {
+        const extraViews = this.props.extras.map((item, index) => (
+            <TouchableOpacity
+                style={[styles.extraItemWrapper, item.extraStyle]}
+                onPress={() => item.onExtraClick()}
+                key={index}>
+                <Image
+                    source={item.icon}
+                    style={[styles.extraIcon, item.extraIconStyle]}/>
+                <Text style={item.textStyle}>{item.text}</Text>
+            </TouchableOpacity>
+        ))
+        return extraViews
     }
 
     renderExtra() {
-        const themeColor = this.props.themeColor
         return (
             this.state.showExtra ?
-                <ScrollView style={[styles.extraWrapper, {height: 150}]}>
+                <ScrollView
+                    contentContainerStyle={[styles.extraWrapper, this.props.extraContainerStyle]}
+                    horizontal={true}>
                     {
 
-                        this.props.extras ?
-                            this.props.extras.map(item => (
-                                <TouchableOpactiy
-                                    style={[styles.extraItemWrapper, item.extraStyle]}>
-                                    onPress={() => item.onExtraClick()}
-                                    <Image
-                                        source={require(item.icon)}
-                                        style={[styles.extraIcon, item.extraIconStyle, {tintColor: themeColor}]}/>
-                                    <Text style={[item.textStyle, {color: themeColor}]}>{item.text}</Text>
-                                </TouchableOpactiy>
-                            ))
-                        :
+                        this.props.extras && this.props.extras.length > 0 ?
+                            this.renderExtraItem()
+                            :
                             null
                     }
                 </ScrollView>
-            :
+                :
                 null
         )
     }
@@ -335,30 +344,31 @@ export default class ChatBox extends Component {
     render() {
         return (
             <View>
-            <View style={[styles.container, this.props.containerStyle, {height: this.state.inputHeight + 10}]}>
-        {
-            this.renderLeft()
-        }
-        {
-            this.renderCenter()
-        }
-        {
-            this.renderRight()
-        }
-    </View>
-        {
-            this.renderEmoji()
-        }
-        {
-            this.renderExtra()
-        }
-    </View>
-    )
+                <View style={[styles.container, {height: this.state.inputHeight + 10}, this.props.containerStyle]}>
+                    {
+                        this.renderLeft()
+                    }
+                    {
+                        this.renderCenter()
+                    }
+                    {
+                        this.renderRight()
+                    }
+                </View>
+                {
+                    this.renderEmoji()
+                }
+                {
+                    this.renderExtra()
+                }
+            </View>
+        )
     }
 }
 
 const styles = StyleSheet.create({
     container: {
+        width: '100%',
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: '#ccc',
@@ -444,7 +454,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     extraWrapper: {
-        flexDirection: 'row',
         padding: 10
     },
     extraItemWrapper: {

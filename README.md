@@ -13,7 +13,7 @@ you must place this component last which in a flexbox container
 
 # Install
 ```
-    npm install react-native-chatbox
+    npm install react-native-chatbox --save
 
     or
 

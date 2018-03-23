@@ -1,3 +1,6 @@
+![npm version](https://img.shields.io/npm/v/react-native-chatbox.svg?style=flat)
+![npm downloads](https://img.shields.io/npm/dw/react-native-chatbox.svg?style=flat)
+
 # react-native-chatbox
 
 a multifunctional input box
